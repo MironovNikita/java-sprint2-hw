@@ -25,10 +25,14 @@ public class Main {
 
                     File file = new File("resources");
                     File[] files = file.listFiles();
-                    for (File f : files) {
-                        if (f.getName().charAt(0) == 'm') {
-                            addListFromFile(monthToYear, f);
+                    try {
+                        for (File f : files) {
+                            if (f.getName().charAt(0) == 'm') {
+                                addListFromFile(monthToYear, f);
+                            }
                         }
+                    } catch (NullPointerException e) {
+                        System.out.println("Файл не обнаружен: " + e.getMessage());
                     }
                     monthRead = true;
                     System.out.println("Считывание месячных отчётов завершено!");
@@ -46,10 +50,14 @@ public class Main {
 
                     File file = new File("resources");
                     File[] files = file.listFiles();
-                    for (File f : files) {
-                        if (f.getName().charAt(0) == 'y') {
-                            addYearFromFile(yearlyReport, f);
+                    try {
+                        for (File f : files) {
+                            if (f.getName().charAt(0) == 'y') {
+                                addYearFromFile(yearlyReport, f);
+                            }
                         }
+                    } catch (NullPointerException e) {
+                        System.out.println("Файл не обнаружен: " + e.getMessage());
                     }
                     yearRead = true;
                     System.out.println("Считывание годовых отчётов завершено!");
@@ -120,31 +128,35 @@ public class Main {
                     String fileName = "";
                     File file = new File("resources");
                     File[] files = file.listFiles();
-                    for (File f : files) {
-                        if (f.getName().charAt(0) == 'y') {
-                            fileName = (f.getName()).substring(2, 6);
-                            System.out.println("Выводится отчёт за " + fileName + " год...");
-                            System.out.println("Идёт обработка данных...");
-                            System.out.println();
-                            System.out.println("Доходы по месяцам: ");
-                            yearlyReport.printAllIncome();
-                            System.out.println("Расходы по месяцам: ");
-                            yearlyReport.printAllConsumption();
-                            System.out.println();
-                            int checkSize = yearlyReport.getYearBalance();
-                            if(checkSize > 0) {
-                                for(int i = 0; i < checkSize; i++) {
-                                    System.out.println("Прибыль за " + (i+1) + "-й месяц: " + yearlyReport.getMonthProfit(i));
+                    try {
+                        for (File f : files) {
+                            if (f.getName().charAt(0) == 'y') {
+                                fileName = (f.getName()).substring(2, 6);
+                                System.out.println("Выводится отчёт за " + fileName + " год...");
+                                System.out.println("Идёт обработка данных...");
+                                System.out.println();
+                                System.out.println("Доходы по месяцам: ");
+                                yearlyReport.printAllIncome();
+                                System.out.println("Расходы по месяцам: ");
+                                yearlyReport.printAllConsumption();
+                                System.out.println();
+                                int checkSize = yearlyReport.getYearBalance();
+                                if (checkSize > 0) {
+                                    for (int i = 0; i < checkSize; i++) {
+                                        System.out.println("Прибыль за " + (i + 1) + "-й месяц: " + yearlyReport.getMonthProfit(i));
+                                    }
+                                } else {
+                                    System.out.println("Ошибка в исходных данных!");
+                                    System.out.println("Количество записей доходов не соответствует количеству записей расходов!");
                                 }
-                            } else {
-                                System.out.println("Ошибка в исходных данных!");
-                                System.out.println("Количество записей доходов не соответствует количеству записей расходов!");
-                            }
 
-                            System.out.println();
-                            System.out.println("Средний расход за все месяцы в году: " + yearlyReport.getAverageMonthConsumption());
-                            System.out.println("Средний доход за все месяцы в году: " + yearlyReport.getAverageMonthIncome());
+                                System.out.println();
+                                System.out.printf("Средний расход за все месяцы в году: %.2f %n", yearlyReport.getAverageMonthConsumption());
+                                System.out.printf("Средний доход за все месяцы в году: %.2f %n", yearlyReport.getAverageMonthIncome());
+                            }
                         }
+                    } catch (NullPointerException e) {
+                        System.out.println("Файл не обнаружен: " + e.getMessage());
                     }
                 } else {
                     System.out.println();
@@ -210,4 +222,8 @@ public class Main {
         in.close();
     }
 }
+/* Семён, привет! Спасибо за подсказки :)
+Стараюсь делать задание как можно раньше, чтобы было время на исправление в случае чего.
+Округление сделал до двух знаков после запятой и ещё сделал проверку на NullPointerException)
 
+ */
